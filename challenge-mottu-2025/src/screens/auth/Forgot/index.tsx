@@ -22,7 +22,7 @@ export default function Forgot() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Já lembra da senha?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('./Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>

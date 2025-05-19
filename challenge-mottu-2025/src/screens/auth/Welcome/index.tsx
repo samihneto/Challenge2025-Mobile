@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
@@ -7,6 +7,7 @@ export default function Welcome() {
 
     return (
         <View style={styles.container}>
+            <Image style={styles.logo} source={require('../../../../assets/images/logoMottu.png')} />
             <Text style={styles.title}>Bem-vindo a MottuGestor</Text>
             <Text style={styles.subtitle}>Facilitando a gestão dos pátios da Mottu</Text>
 
@@ -29,6 +30,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 80,
         backgroundColor: '#111914',
+    },
+    logo: {
+        width: 400,
+        height: 400,
+        marginBottom: 0,
+        resizeMode: 'contain',
     },
     title: {
         fontSize: 28,

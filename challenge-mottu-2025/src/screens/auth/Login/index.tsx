@@ -40,7 +40,7 @@ export default function Login({ navigation, onLogin }: any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Entre no Mottu Gestor</Text>
 
       <TextInput
         placeholder="E-mail"
