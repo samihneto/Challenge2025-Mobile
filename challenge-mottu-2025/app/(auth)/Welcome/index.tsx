@@ -7,8 +7,8 @@ export default function Welcome() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bem-vindo a GestFast</Text>
-            <Text style={styles.subtitle}>Auxiliando a gestão da Mottu</Text>
+            <Text style={styles.title}>Bem-vindo a MottuGestor</Text>
+            <Text style={styles.subtitle}>Facilitando a gestão dos pátios da Mottu</Text>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.loginButton}>

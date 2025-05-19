@@ -1,18 +1,66 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
 export default function Login() {
     const router = useRouter();
 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+
+    const handleLogin = async () => {
+        if (!email || !senha) {
+            Alert.alert('Erro', 'Preencha todos os campos');
+            return;
+        }
+
+        try {
+            const contasSalvas = await AsyncStorage.getItem('@contas');
+            const contas = contasSalvas ? JSON.parse(contasSalvas) : [];
+
+            const contaEncontrada = contas.find(
+                (conta: any) => conta.email === email && conta.senha === senha
+            );
+
+            if (!contaEncontrada) {
+                Alert.alert('Erro', 'E-mail ou senha inválidos');
+                return;
+            }
+
+            await AsyncStorage.setItem('@user', JSON.stringify(contaEncontrada));
+            Alert.alert('Sucesso', 'Login realizado!');
+            router.push('/Dashboard');
+
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+            Alert.alert('Erro', 'Não foi possível fazer login');
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
 
-            <TextInput placeholder="E-mail" style={styles.input} placeholderTextColor="#ccc" />
-            <TextInput placeholder="Senha" secureTextEntry style={styles.input} placeholderTextColor="#ccc" />
+            <TextInput
+                placeholder="E-mail"
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+                placeholderTextColor="#ccc"
+                keyboardType="email-address"
+                autoCapitalize="none"
+            />
+            <TextInput
+                placeholder="Senha"
+                value={senha}
+                onChangeText={setSenha}
+                secureTextEntry
+                style={styles.input}
+                placeholderTextColor="#ccc"
+            />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>ENTRAR</Text>
             </TouchableOpacity>
 
@@ -25,8 +73,6 @@ export default function Login() {
                 <TouchableOpacity onPress={() => router.push('./Register')}>
                     <Text style={styles.link}>Criar Conta</Text>
                 </TouchableOpacity>
-
-
             </View>
         </View>
     );
