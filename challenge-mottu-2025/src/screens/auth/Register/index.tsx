@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Register() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
+  const navigation = useNavigation<any>();
+
+    const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const handleRegister = async () => {
@@ -35,7 +36,7 @@ export default function Register() {
       await AsyncStorage.setItem('@contas', JSON.stringify(contas));
 
       Alert.alert('Sucesso', 'Conta criada com sucesso!');
-      router.push('./Login');
+      navigation.navigate('Login');
 
     } catch (error) {
       Alert.alert('Erro', 'Algo deu errado ao registrar');
@@ -71,16 +72,13 @@ export default function Register() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Já tem uma conta?</Text>
-        <TouchableOpacity onPress={() => router.push('./Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.link}>Entrar</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-// (mantém os estilos iguais ao seu código original)
-
 
 const styles = StyleSheet.create({
     container: {

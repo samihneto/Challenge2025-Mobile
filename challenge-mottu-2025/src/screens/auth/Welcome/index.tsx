@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Welcome() {
-    const router = useRouter();
+    const navigation = useNavigation<any>();
 
     return (
         <View style={styles.container}>
@@ -12,10 +12,10 @@ export default function Welcome() {
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText} onPress={() => router.push("./Login")}>ENTRAR</Text>
+                    <Text style={styles.loginButtonText} onPress={() => navigation.navigate("Login")}>ENTRAR</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText} onPress={() => router.push("./Register")}>CADASTRAR</Text>
+                    <Text style={styles.loginButtonText} onPress={() => navigation.navigate("Register")}>CADASTRAR</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -58,10 +58,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         alignItems: 'center',
         marginBottom: 20,
-      },
-      loginButtonText: {
+    },
+    loginButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-      },
+    },
 });

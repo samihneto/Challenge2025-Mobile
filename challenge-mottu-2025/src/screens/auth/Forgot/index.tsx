@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Forgot() {
-  const router = useRouter();
+  const navigation = useNavigation<any>(); // Tipagem pode variar
 
   return (
     <View style={styles.container}>
@@ -22,7 +22,7 @@ export default function Forgot() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Já lembra da senha?</Text>
-        <TouchableOpacity onPress={() => router.push('./Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('./Login')}>
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>

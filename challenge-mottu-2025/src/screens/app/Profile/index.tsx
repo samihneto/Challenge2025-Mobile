@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Switch } from 'react-native';
-import { useRouter } from 'expo-router';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator,
+    Switch
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Footer from '@/components/Footer';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Profile() {
-    const router = useRouter();
+    const navigation = useNavigation();
     const [usuario, setUsuario] = useState<{ email: string; apelido?: string } | null>(null);
     const [loading, setLoading] = useState(true);
     const [temaEscuro, setTemaEscuro] = useState(false);
@@ -32,21 +38,12 @@ export default function Profile() {
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem("@user-token");
-        router.push("/Login");
+        navigation.reset;
     };
 
-    const alternarTema = (valor: boolean) => {
-        setTemaEscuro(valor);
-    };
-
-    const alternarNotificacoes = (valor: boolean) => {
-        setNotificacoes(valor);
-    };
-
-    const excluirConta = () => {
-        // Função para excluir a conta, caso necessário
-        console.log("Conta excluída");
-    };
+    const alternarTema = (valor: boolean) => setTemaEscuro(valor);
+    const alternarNotificacoes = (valor: boolean) => setNotificacoes(valor);
+    const excluirConta = () => console.log("Conta excluída");
 
     if (loading) {
         return (
@@ -69,39 +66,29 @@ export default function Profile() {
                         <Text style={styles.editarFotoText}>Editar</Text>
                     </TouchableOpacity>
                 </View>
+
                 <View style={styles.infoContainer}>
-                    <Text>
-                        Informações Pessoais
-                    </Text>
+                    <Text>Informações Pessoais</Text>
+
                     <View style={styles.campoContainer}>
-                        <Text style={[styles.campoLabel]}>
-                            Email
-                        </Text>
-                        <Text style={[styles.campoValor]}>
+                        <Text style={styles.campoLabel}>Email</Text>
+                        <Text style={styles.campoValor}>
                             {usuario?.email || 'email@exemplo.com'}
                         </Text>
                     </View>
 
-                    <View style={[styles.campoContainer]}>
-                        <Text style={[styles.campoLabel]}>
-                            Cliente desde
-                        </Text>
-                        <Text style={[styles.campoValor]}>
-
-                        </Text>
+                    <View style={styles.campoContainer}>
+                        <Text style={styles.campoLabel}>Cliente desde</Text>
+                        <Text style={styles.campoValor}></Text>
                     </View>
                 </View>
 
                 {/* Configurações */}
-                <View style={[styles.secao]}>
-                    <Text style={[styles.secaoTitulo]}>
-                        Configurações
-                    </Text>
+                <View style={styles.secao}>
+                    <Text style={styles.secaoTitulo}>Configurações</Text>
 
                     <View style={styles.opcaoContainer}>
-                        <Text style={[styles.opcaoLabel]}>
-                            Tema Escuro
-                        </Text>
+                        <Text style={styles.opcaoLabel}>Tema Escuro</Text>
                         <Switch
                             trackColor={{ false: '#e0e0e0', true: '#81b0ff' }}
                             thumbColor={temaEscuro ? '#6a8fff' : '#f4f3f4'}
@@ -112,9 +99,7 @@ export default function Profile() {
                     </View>
 
                     <View style={styles.opcaoContainer}>
-                        <Text style={[styles.opcaoLabel]}>
-                            Notificações
-                        </Text>
+                        <Text style={styles.opcaoLabel}>Notificações</Text>
                         <Switch
                             trackColor={{ false: '#e0e0e0', true: '#81b0ff' }}
                             thumbColor={notificacoes ? '#6a8fff' : '#f4f3f4'}
@@ -131,61 +116,25 @@ export default function Profile() {
                         Ajuda e Suporte
                     </Text>
 
-                    <TouchableOpacity
-                        style={styles.linkContainer}
-                    >
-                        <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>
-                            Central de Ajuda
-                        </Text>
-                        <Text style={styles.linkSeta}>→</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.linkContainer}
-                    >
-                        <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>
-                            Termos de Uso
-                        </Text>
-                        <Text style={styles.linkSeta}>→</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.linkContainer}
-                    >
-                        <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>
-                            Política de Privacidade
-                        </Text>
-                        <Text style={styles.linkSeta}>→</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[styles.linkContainer]}
-                    >
-                        <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>
-                            Sobre o Aplicativo
-                        </Text>
-                        <Text style={styles.linkSeta}>→</Text>
-                    </TouchableOpacity>
+                    {['Central de Ajuda', 'Termos de Uso', 'Política de Privacidade', 'Sobre o Aplicativo'].map((item) => (
+                        <TouchableOpacity key={item} style={styles.linkContainer}>
+                            <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>{item}</Text>
+                            <Text style={styles.linkSeta}>→</Text>
+                        </TouchableOpacity>
+                    ))}
                 </View>
 
                 {/* Botões de conta */}
-                <View style={[styles.secao]}>
-                    <TouchableOpacity
-                        style={styles.botaoLogout}
-                        onPress={handleLogout}
-                    >
+                <View style={styles.secao}>
+                    <TouchableOpacity style={styles.botaoLogout} onPress={handleLogout}>
                         <MaterialIcons name="logout" size={20} color="#111914" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={styles.botaoExcluir}
-                        onPress={excluirConta}
-                    >
+                    <TouchableOpacity style={styles.botaoExcluir} onPress={excluirConta}>
                         <MaterialIcons name="delete" size={20} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>
-            <Footer />
         </View>
     );
 }
@@ -216,7 +165,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         gap: 8,
-        marginBottom: 80,
     },
     avatarContainer: {
         alignItems: 'center',
