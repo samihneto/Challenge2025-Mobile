@@ -1,41 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from 'hooks/useAuth';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 
 
-export default function Login({ navigation, onLogin }: any) {
+export default function Login() {
+  const { navigate } = useNavigation();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const {login} = useAuth();
 
   const handleLogin = async () => {
     if (!email || !senha) {
       Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
+    login(email, senha);
 
-    try {
-      const contasSalvas = await AsyncStorage.getItem('@contas');
-      const contas = contasSalvas ? JSON.parse(contasSalvas) : [];
-
-      const contaEncontrada = contas.find(
-        (conta: any) => conta.email === email && conta.senha === senha
-      );
-
-      if (!contaEncontrada) {
-        Alert.alert('Erro', 'E-mail ou senha inválidos');
-        return;
-      }
-
-      await AsyncStorage.setItem('@user', JSON.stringify(contaEncontrada));
-      Alert.alert('Sucesso', 'Login realizado!');
-      onLogin(); // <- chama o RootNavigator para ir para o AppStack
-
-    } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      Alert.alert('Erro', 'Não foi possível fazer login');
-    }
   };
 
   return (
@@ -64,13 +46,13 @@ export default function Login({ navigation, onLogin }: any) {
         <Text style={styles.buttonText}>ENTRAR</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Forgot')}>
+      <TouchableOpacity onPress={() => navigate('Forgot')}>
         <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
       </TouchableOpacity>
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Não tem uma conta?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <TouchableOpacity onPress={() => navigate('Register')}>
           <Text style={styles.link}>Criar Conta</Text>
         </TouchableOpacity>
       </View>

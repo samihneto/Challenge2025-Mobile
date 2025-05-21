@@ -1,12 +1,12 @@
-import React from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
 import Dashboard from '../screens/app/Dashboard';
 import Profile from '../screens/app/Profile';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export default function AppStack({ onLogout }: { onLogout: () => void }) {
+export default function AppStack() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -22,9 +22,7 @@ export default function AppStack({ onLogout }: { onLogout: () => void }) {
         },
       })}
     >
-      <Tab.Screen name="Dashboard">
-        {(props) => <Dashboard {...props} onLogout={onLogout} />}
-      </Tab.Screen>
+      <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

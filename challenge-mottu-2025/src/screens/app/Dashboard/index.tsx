@@ -1,12 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from 'hooks/useAuth';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Dashboard({ onLogout }: any) {
+  const { logout } = useAuth();
   const handleLogout = async () => {
     await AsyncStorage.removeItem('@user');
-    onLogout();
+    logout();
   };
 
   return (

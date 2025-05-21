@@ -1,22 +1,25 @@
+import { MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from 'hooks/useAuth';
 import React, { useEffect, useState } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
     ActivityIndicator,
-    Switch
+    StyleSheet,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Profile() {
-    const navigation = useNavigation();
+    const { logout } = useAuth();
+    const { navigate } = useNavigation();
     const [usuario, setUsuario] = useState<{ email: string; apelido?: string } | null>(null);
     const [loading, setLoading] = useState(true);
     const [temaEscuro, setTemaEscuro] = useState(false);
     const [notificacoes, setNotificacoes] = useState(true);
+
 
     useEffect(() => {
         const carregarUsuario = async () => {
@@ -38,7 +41,7 @@ export default function Profile() {
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem("@user-token");
-        navigation.reset;
+        logout();
     };
 
     const alternarTema = (valor: boolean) => setTemaEscuro(valor);
