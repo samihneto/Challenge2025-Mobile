@@ -17,9 +17,7 @@ export default function Profile() {
     const { navigate } = useNavigation();
     const [usuario, setUsuario] = useState<{ email: string; apelido?: string } | null>(null);
     const [loading, setLoading] = useState(true);
-    const [temaEscuro, setTemaEscuro] = useState(false);
     const [notificacoes, setNotificacoes] = useState(true);
-
 
     useEffect(() => {
         const carregarUsuario = async () => {
@@ -44,7 +42,6 @@ export default function Profile() {
         logout();
     };
 
-    const alternarTema = (valor: boolean) => setTemaEscuro(valor);
     const alternarNotificacoes = (valor: boolean) => setNotificacoes(valor);
     const excluirConta = () => console.log("Conta excluída");
 
@@ -91,17 +88,6 @@ export default function Profile() {
                     <Text style={styles.secaoTitulo}>Configurações</Text>
 
                     <View style={styles.opcaoContainer}>
-                        <Text style={styles.opcaoLabel}>Tema Escuro</Text>
-                        <Switch
-                            trackColor={{ false: '#e0e0e0', true: '#81b0ff' }}
-                            thumbColor={temaEscuro ? '#6a8fff' : '#f4f3f4'}
-                            ios_backgroundColor="#e0e0e0"
-                            onValueChange={alternarTema}
-                            value={temaEscuro}
-                        />
-                    </View>
-
-                    <View style={styles.opcaoContainer}>
                         <Text style={styles.opcaoLabel}>Notificações</Text>
                         <Switch
                             trackColor={{ false: '#e0e0e0', true: '#81b0ff' }}
@@ -114,14 +100,12 @@ export default function Profile() {
                 </View>
 
                 {/* Links úteis */}
-                <View style={[styles.secao, temaEscuro && styles.cardDark]}>
-                    <Text style={[styles.secaoTitulo, temaEscuro && styles.textDark]}>
-                        Ajuda e Suporte
-                    </Text>
+                <View style={styles.secao}>
+                    <Text style={styles.secaoTitulo}>Ajuda e Suporte</Text>
 
                     {['Central de Ajuda', 'Termos de Uso', 'Política de Privacidade', 'Sobre o Aplicativo'].map((item) => (
                         <TouchableOpacity key={item} style={styles.linkContainer}>
-                            <Text style={[styles.linkLabel, temaEscuro && styles.textDark]}>{item}</Text>
+                            <Text style={styles.linkLabel}>{item}</Text>
                             <Text style={styles.linkSeta}>→</Text>
                         </TouchableOpacity>
                     ))}
@@ -256,11 +240,5 @@ const styles = StyleSheet.create({
         width: 90,
         alignItems: 'center',
         marginTop: 20,
-    },
-    cardDark: {
-        backgroundColor: '#333',
-    },
-    textDark: {
-        color: '#f7f7f7',
     },
 });
