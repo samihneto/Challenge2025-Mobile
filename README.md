@@ -31,3 +31,10 @@ cd challenge-mottu-2025
 npm install
 
 npx expo start
+
+---
+
+### Integrantes
+Felipe Levy Stephens Fidelix - RM556426
+Jennifer Suzuki - RM554661
+Samir Hage Neto - RM557260
